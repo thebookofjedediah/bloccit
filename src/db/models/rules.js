@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Rules.associate = function(models) {
     // associations can be defined here
-    Rule.belongsTo(models.Topic, {
+    Rules.belongsTo(models.Topic, {
     	foreignKey: "topicId",
     	onDelete: "CASCADE",
     });
