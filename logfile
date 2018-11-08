@@ -1,0 +1,5 @@
+2018-11-07 21:36:52.124 EST [68806] LOG:  listening on IPv6 address "::1", port 5432
+2018-11-07 21:36:52.124 EST [68806] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2018-11-07 21:36:52.124 EST [68806] FATAL:  lock file "/tmp/.s.PGSQL.5432.lock" already exists
+2018-11-07 21:36:52.124 EST [68806] HINT:  Is another postmaster (PID 523) using socket file "/tmp/.s.PGSQL.5432"?
+2018-11-07 21:36:52.124 EST [68806] LOG:  database system is shut down
