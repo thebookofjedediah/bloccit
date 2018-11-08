@@ -74,6 +74,35 @@ describe("routes : advertisements", () => {
 			);
 		});
 	});
+
+	describe("GET /advertisements/:id", () => {
+		it("should render a view with the selected advertisement", (done) => {
+			request.get(`${base}${this.advertisement.id}`, (err, res, body) => {
+				expect(err).toBeNull();
+				expect(body).toContain("Spikeball");
+				done();
+			});
+		});
+	});
+
+	describe("POST /advertisements/:id/destroy", () => {
+		it("should delete the advertisement with the associated ID", (done) => {
+			Advertisement.all()
+			.then((advertisements) => {
+				const advertisementCountBeforeDelete = advertisements.length;
+				expect(advertisementCountBeforeDelete).toBe(1);
+
+				request.post(`${base}${this.advertisement.id}/destroy`, (err, res, body) => {
+					Advertisement.all()
+					.then((advertisements) => {
+						expect(err).toBeNull();
+						expect(advertisements.lenth).toBe(advertisementCountBeforeDelete -1);
+						done();
+					})
+				});
+			});
+		});
+	});
 });
 
 
