@@ -96,9 +96,43 @@ describe("routes : advertisements", () => {
 					Advertisement.all()
 					.then((advertisements) => {
 						expect(err).toBeNull();
-						expect(advertisements.lenth).toBe(advertisementCountBeforeDelete -1);
+						expect(advertisements.length).toBe(advertisementCountBeforeDelete -1);
 						done();
 					})
+				});
+			});
+		});
+	});
+
+	describe("GET /advertisements/:id/edit", () => {
+		it("should render a view with an edit advertisement form", (done) =>{
+			request.get(`${base}${this.advertisement.id}/edit`, (err, res, body) => {
+				expect(err).toBeNull();
+				expect(body).toContain("Edit Advertisement");
+				expect(body).toContain("Spikeball");
+				done();
+			});
+		});
+	});
+
+	describe("POST /advertisements/:id/update", () => {
+		it("should update the advertisement with the given values", (done) => {
+			const options = {
+				url: `${base}${this.advertisement.id}/update`,
+				form: {
+					title: "Spikeball",
+					description: "The world's best sport"
+				}
+			};
+			request.post(options, 
+				(err, res, body) => {
+				expect(err).toBeNull();
+				Advertisement.findOne({
+					where: {id: this.advertisement.id }
+				})
+				.then((advertisement) => {
+					expect(advertisement.title).toBe("Spikeball");
+					done();
 				});
 			});
 		});
