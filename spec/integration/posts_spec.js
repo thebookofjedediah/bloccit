@@ -60,10 +60,11 @@ describe("routes : posts", () => {
 
 					Post.findOne({where: {title: "Watching snow melt"}})
 					.then((post) => {
-						expect(post).not.toBeNull();
-						expect(post.title).toBe("Watching snow melt");
-						expect(post.body).toBe("Without a doubt my favoriting things to do besides watching paint dry!");
-						expect(post.topicId).not.toBeNull();
+						console.log(` \n\nDEBUG: ${JSON.stringify(this.post)}\n` );
+						expect(this.post).not.toBeNull();
+						expect(this.post.title).toBe("Watching snow melt");
+						expect(this.post.body).toBe("Without a doubt my favoriting things to do besides watching paint dry!");
+						expect(this.post.topicId).not.toBeNull();
 						done();
 					})
 					.catch((err) => {
@@ -73,6 +74,7 @@ describe("routes : posts", () => {
 				}
 			);
 		});
+
 		it("should not create a new post that fails validations", (done) => {
       		const options = {
         		url: `${base}/${this.topic.id}/posts/create`,
