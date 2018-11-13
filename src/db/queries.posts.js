@@ -41,8 +41,9 @@ module.exports = {
 			post.update(updatedPost, {
 				fields: Object.keys(updatedPost)
 			})
-			.then(() => {
-				callback(null, post);
+			.then((updatedPost) => {
+				console.dir(`postQueries#updatePost:\n${JSON.stringify(updatedPost)}`);
+				callback(null, updatedPost);
 			})
 			.catch((err) => {
 				callback(err);

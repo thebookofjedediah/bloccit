@@ -60,11 +60,10 @@ describe("routes : posts", () => {
 
 					Post.findOne({where: {title: "Watching snow melt"}})
 					.then((post) => {
-						console.log(` \n\nDEBUG: ${JSON.stringify(this.post)}\n` );
-						expect(this.post).not.toBeNull();
-						expect(this.post.title).toBe("Watching snow melt");
-						expect(this.post.body).toBe("Without a doubt my favoriting things to do besides watching paint dry!");
-						expect(this.post.topicId).not.toBeNull();
+						expect(post).not.toBeNull();
+						expect(post.title).toBe("Watching snow melt");
+						expect(post.body).toBe("Without a doubt my favoriting things to do besides watching paint dry!");
+						expect(post.topicId).not.toBeNull();
 						done();
 					})
 					.catch((err) => {
@@ -151,26 +150,48 @@ describe("routes : posts", () => {
      	});
 
      	it("should update the post with the given values", (done) => {
-         	const options = {
-           		url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
-           		form: {
-             	title: "Snowman Building Competition"
-           		}
-         	};
-         	request.post(options,
-           	(err, res, body) => {
+     		const options = {
+     			url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
+     			form: {
+     				title: "Snowman Building Competition"
+     			}
+     		};
+     		request.post(options,
+     			(err, res, body) => {
+     				expect(err).toBeNull();
 
-           		expect(err).toBeNull();
+     				Post.findOne({
+     					where: {id: this.post.id}
+     				})
+     				.then((newPost) => {
+     					expect(newPost.title).toBe("Snowman Building Competition");
+     					done();
+     					});
+     			});
+     	}); 
 
-          		Post.findOne({
-             		where: {id: this.post.id}
-           		})
-           		.then((post) => {
-             		expect(post.title).toBe("Snowman Building Competition");
-             		done();
-           		});
-         	});
-     	});
+     	// it("should update the post with the given values", (done) => {
+      //    	const options = {
+      //      		url: `${base}/${this.topic.id}/posts/${this.post.id}/update`,
+      //      		form: {
+      //        	title: "Snowman Building Competition"
+      //      		}
+      //    	};
+      //    	request.post(options,
+      //      	(err, res, body) => {
+
+      //      		expect(err).toBeNull();
+
+      //     		Post.findOne({
+      //        		where: {id: this.post.id}
+      //      		})
+      //      		.then((post) => {
+      //      			console.dir(`post_spec DEBUG: ${JSON.stringify(post)}`);
+      //        		expect(post.title).toBe("Snowman Building Competition");
+      //        		done();
+      //      		});
+      //    	});
+     	// });
 
    	});
 
