@@ -166,7 +166,7 @@ describe("routes : posts", () => {
              		where: {id: this.post.id}
            		})
            		.then((post) => {
-           			console.dir(`post_spec DEBUG: ${JSON.stringify(post)}`);
+           			//console.dir(`post_spec DEBUG: ${JSON.stringify(post)}`);
              		expect(post.title).toBe("Snowman Building Competition");
              		done();
            		});

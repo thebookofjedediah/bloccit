@@ -42,7 +42,7 @@ module.exports = {
 				fields: Object.keys(updatedPost)
 			})
 			.then((updatedPost) => {
-				console.dir(`postQueries#updatePost:\n${JSON.stringify(updatedPost)}`);
+				//console.dir(`postQueries#updatePost:\n${JSON.stringify(updatedPost)}`);
 				callback(null, updatedPost);
 			})
 			.catch((err) => {
