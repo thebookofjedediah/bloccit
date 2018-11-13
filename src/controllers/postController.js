@@ -47,7 +47,6 @@ module.exports = {
 	},
 	update(req, res, next){
 		postQueries.updatePost(req.params.id, req.body, (err, post) => {
-			console.dir(`postController#update:\n${JSON.stringify(req.body)}`);
 			if(err || post == null){
 				res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
 			} else {
