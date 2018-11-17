@@ -29,6 +29,11 @@ module.exports = (sequelize, DataTypes) => {
       return this.role === "admin";
     };
 
+    User.hasMany(models.Comment, {
+      foreignKey: "userId",
+      as: "comments"
+    });
+
   };
   return User;
 };
