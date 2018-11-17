@@ -156,7 +156,7 @@ describe("Vote", () => {
       .then((vote) => {
         vote.getUser()
         .then((user) => {
-          expect(user.id).toBe(this.user.id); // ensure the right user is returned
+          expect(user.id).toBe(this.user.id); 
           done();
         })
       })
@@ -167,9 +167,118 @@ describe("Vote", () => {
     });
   });
 
+  describe("#setPost()", () => {
+    it("should associate a post and a vote together", (done) => {
+      Vote.create({
+        value: -1,
+        postId: this.post.id,
+        userId: this.user.id
+      })
+      .then((vote) => {
+        this.vote = vote;
+        Post.create({
+          title: "This is a great post",
+          body: "Please upvote me",
+          topicId: this.topic.id,
+          userId: this.user.id
+        })
 
+        .then((newPost) => {
+          expect(this.vote.postId).toBe(this.post.id);
+          this.vote.setPost(newPost)
+          .then((vote) => {
+            expect(vote.postId).toBe(newPost.id);
+            done();
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          done();
+        });
+      });
+    });
+  });
 
+  describe("getPost()", () => {
+    it("should return the associated post", (done) => {
+      Vote.create({
+        value: 1,
+        userId: this.user.id,
+        postId: this.post.id
+      })
+      .then((vote) => {
+        this.comment.getPost()
+        .then((associatedPost) => {
+          expect(associatedPost.title).toBe("My first visit to Proxima Centauri b");
+          done();
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        done();
+      });
+    });
+  });
 
-  //suits will begin here
+  describe("#hasUpvoteFor()", () => {
+    it("should return true if the user has a upvote on this post", done => {
+      Vote.create({
+        value: 1,
+        postId: this.post.id,
+        userId: this.user.id,
+      })
+      .then((vote) => {
+        this.vote = vote;
+        Post.create({
+          title: "Spikeball",
+          body: "Best sport in the world",
+          topicId: this.topic.id,
+          userId: this.user.id,
+        })
+        .then((newPost) => {
+          expect(this.vote.postId).not.toBe(newPost.id);
+          this.vote.setPost(newPost).then((vote) => {
+            expect(vote.postId).toBe(newPost.id);
+            expect(this.vote.userId).toBe(newPost.userId);
+            newPost.hasUpvoteFor(newPost.userId).then((votes) => {
+              expect(votes.length > 0).toBe(true);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
+  describe("#hasDownvoteFor()", () => {
+    it("should return true if the user has a downvote on this post", done => {
+      Vote.create({
+        value: -1,
+        postId: this.post.id,
+        userId: this.user.id,
+      })
+      .then((vote) => {
+        this.vote = vote;
+        Post.create({
+          title: "Kickball",
+          body: "Not the best sport",
+          topicId: this.topic.id,
+          userId: this.user.id,
+        })
+        .then((newPost) => {
+          expect(this.vote.postId).not.toBe(newPost.id);
+          this.vote.setPost(newPost).then((vote) => {
+            expect(vote.postId).toBe(newPost.id);
+            expect(this.vote.userId).toBe(newPost.userId);
+            newPost.hasDownvoteFor(newPost.userId).then((votes) => {
+              expect(votes.length > 0).toBe(true);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
 
 });

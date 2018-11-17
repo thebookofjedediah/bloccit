@@ -1,7 +1,6 @@
 const request = require("request");
 const server = require("../../src/server");
 const base = "http://localhost:3000/topics/";
-
 const sequelize = require("../../src/db/models/index").sequelize;
 const Topic = require("../../src/db/models").Topic;
 const Post = require("../../src/db/models").Post;
@@ -135,6 +134,26 @@ describe("routes : votes", () => {
                             console.log(err);
                             done();
                         });
+                    });
+                });
+
+                it("should not allow a member to upvote multiple times on the same post", (done) => {
+                    Post.findOne({
+                        where: {
+                            title: "My first visit to Proxima Centauri b"
+                        }
+                    })
+                    Vote.create({
+                        value: 1,
+                        postId: this.post.id,
+                        userId: this.user.id
+                    })
+                    .then((voteAgain) => {
+                        done();
+                    })
+                    .catch((err) => {
+                        expect(err.message).toContain("You can only upvote once.");
+                        done();
                     });
                 });
             });
